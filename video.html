@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Streaming Video</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+    }
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      font-size: 24px;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay">🔴 Live Streaming</div>
+
+<video id="video" autoplay muted loop playsinline controls>
+  <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<script>
+  const video = document.getElementById('video');
+
+  window.onload = async () => {
+    try {
+      await video.play();
+
+      // Delayed unmute to avoid autoplay restrictions
+      setTimeout(() => {
+        //video.muted = false;
+        //video.volume = 1.0;
+      }, 2000);
+    } catch (err) {
+      console.error("Autoplay/playback failed:", err);
+    }
+  };
+
+  window.getVideoStream = () => video.captureStream(30);
+
+  // Debug hooks
+  video.onpause = () => console.warn('Video paused');
+  video.onended = () => console.warn('Video ended');
+  video.onplaying = () => console.log('Video playing');
+</script>
+
+</body>
+</html>
